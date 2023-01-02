@@ -25,8 +25,20 @@ def check_weather_db(latitude, longitude):
     conne_ct = sqlite3.connect('weatherdb.sqlite')
     conne_ct.row_factory = sqlite3.Row
     cursor = conne_ct.cursor()
-    cursor.execute(
-        f"select * from weather_app where latitude = {latitude} and longitude={longitude};")
+    try:
+        cursor.execute(
+            f"select * from weather_app where latitude = {latitude} and longitude={longitude};")
+    except sqlite3.OperationalError as error:
+        print(error)
+        cursor.execute("""create table if not exists weather_app ( 
+                            latitude float NOT NULL, 
+                            longitude float NOT NULL, 
+                            description varchar(200), 
+                            wind float, 
+                            temperature float,
+                            local_time datetime default current_timestamp
+                            );""")
+        return None
 
     fetch = cursor.fetchall()
     conne_ct.close()
@@ -75,7 +87,7 @@ def post_weather():
     # if it doesnt have, then get from open weather api
     else:
         api_weather_data = get_data_from_open_weather(lat, lon)
-    # api weather data can either be success or failed dictionary
+        # api weather data can either be success or failed dictionary
         if "error_message" in api_weather_data:
             return api_weather_data["error_message"]
         else:
@@ -88,7 +100,7 @@ values ({lat},{lon}, '{api_weather_data["description"]}', {api_weather_data["win
 time('now') ); """
             cursor.execute(db_query)
             connection.commit()
- # return value
+            # return value
             return render_template("base.html", description=api_weather_data["description"],
                                    wind=api_weather_data["wind"], temperature=api_weather_data["temperature"])
 
