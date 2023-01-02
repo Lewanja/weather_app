@@ -1,0 +1,7 @@
+Lib/
+Scripts/
+pyvenv.cfg
+requests_modules.py
+response_text_content.py
+status_code_issued.py
+weatherdb.sqlite

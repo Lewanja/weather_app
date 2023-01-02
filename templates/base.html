@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WeatherToday</title>
+</head>
+<body>
+<!--Make a weather application to get the weather of the location entered. The user gets a web page (don’t worry about styling) with a form to enter lat/long, or location name then the API will return the current weather for the plac-->
+
+<h1>
+    {{weather_response}}
+</h1>
+<table>
+    <tr>
+        <th>description</th>
+        <th>wind</th>
+        <th>temperature</th>
+    </tr>
+    <tr>
+        <td>{{description}}</td>
+        <td>{{wind}}</td>
+        <td>{{temperature}}</td>
+    </tr>
+</table>
+</body>
+</html>
